@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders</title>
+    <style>
+        /* Reset default styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Body styling */
+        body {
+            background-color: #e8f0fe;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Navbar styling */
+        .navbar {
+            background-color: #295e9b;
+            padding: 1rem;
+            text-align: center;
+            color: #ffffff;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Main content container */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            flex: 1; /* Allow container to grow and fill space */
+            position: relative; /* Position relative for absolute positioning of button */
+        }
+
+        h2 {
+            color: #28578d;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        /* Orders table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #d1e7ff;
+            color: #00397a;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f1f7ff;
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Button styling */
+        .btn-view, .btn-cancel, .btn-paid, .btn-return {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-view {
+            background-color: #1d1b8d;
+            color: #ffffff;
+        }
+
+        .btn-view:hover {
+            background-color: #0528ee;
+        }
+
+        .btn-cancel {
+            background-color: #c5392a;
+            color: #ffffff;
+        }
+
+        .btn-cancel:hover {
+            background-color: #ee1e07;
+        }
+
+        .btn-paid {
+            background-color: #0a880a;
+            color: #ffffff;
+        }
+
+        .btn-paid:hover {
+            background-color: #43c932;
+        }
+
+        .btn-return {
+            background-color: #1e4b7e;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            padding: 0.7rem 1.5rem;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+            position: absolute; /* Absolute position for bottom right placement */
+            bottom: 1rem; /* Distance from the bottom */
+            right: 1rem; /* Distance from the right */
+        }
+
+        .btn-return:hover {
+            background-color: #153650;
+        }
+
+        /* Notification styling */
+        .notification {
+            display: none; /* Initially hidden */
+            background-color: #28a745; /* Green background */
+            color: white;
+            padding: 1rem;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: opacity 0.5s ease, transform 0.5s ease; /* Smooth transitions */
+        }
+
+        .notification.show {
+            display: block; /* Show notification */
+            opacity: 1;
+            transform: translateY(0); /* Move into view */
+        }
+
+        /* Modal styling */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.4); 
+            padding-top: 60px; 
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; 
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; 
+            max-width: 600px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+    </div>
+
+    <!-- Main content container -->
+    <div class="container">
+        <h2>Order History</h2>
+        
+        <!-- Orders Table -->
+        <table id="ordersTable">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="order-ORD00123">
+                    <td>ORD00123</td>
+                    <td>2024-10-15</td>
+                    <td>Shipped</td>
+                    <td>₹ 2,500.00</td>
+                    <td class="order-actions">
+                        <button class="btn-view" onclick="viewOrder('ORD00123')">View</button>
+                        <button class="btn-cancel" onclick="cancelOrder('ORD00123')">Cancel</button>
+                        <button class="btn-paid" onclick="markAsPaid('ORD00123')">Paid</button>
+                    </td>
+                </tr>
+                <tr id="order-ORD00123">
+                    <td>ORD00123</td>
+                    <td>2024-10-15</td>
+                    <td>Shipped</td>
+                    <td>₹ 2,500.00</td>
+                    <td class="order-actions">
+                        <button class="btn-view" onclick="viewOrder('ORD00123')">View</button>
+                        <button class="btn-cancel" onclick="cancelOrder('ORD00123')">Cancel</button>
+                        <button class="btn-paid" onclick="markAsPaid('ORD00123')">Paid</button>
+                    </td>
+                </tr>
+                <tr id="order-ORD00123">
+                    <td>ORD00123</td>
+                    <td>2024-10-15</td>
+                    <td>Shipped</td>
+                    <td>₹ 2,500.00</td>
+                    <td class="order-actions">
+                        <button class="btn-view" onclick="viewOrder('ORD00123')">View</button>
+                        <button class="btn-cancel" onclick="cancelOrder('ORD00123')">Cancel</button>
+                        <button class="btn-paid" onclick="markAsPaid('ORD00123')">Paid</button>
+                    </td>
+                </tr>
+                <tr id="order-ORD00123">
+                    <td>ORD00123</td>
+                    <td>2024-10-15</td>
+                    <td>Shipped</td>
+                    <td>₹ 2,500.00</td>
+                    <td class="order-actions">
+                        <button class="btn-view" onclick="viewOrder('ORD00123')">View</button>
+                        <button class="btn-cancel" onclick="cancelOrder('ORD00123')">Cancel</button>
+                        <button class="btn-paid" onclick="markAsPaid('ORD00123')">Paid</button>
+                    </td>
+                </tr>
+                <tr id="order-ORD00124">
+                    <td>ORD00124</td>
+                    <td>2024-10-18</td>
+                    <td>Pending</td>
+                    <td>₹ 3,200.00</td>
+                    <td class="order-actions">
+                        <button class="btn-view" onclick="viewOrder('ORD00124')">View</button>
+                        <button class="btn-cancel" onclick="cancelOrder('ORD00124')">Cancel</button>
+                        <button class="btn-paid" onclick="markAsPaid('ORD00124')">Paid</button>
+                    </td>
+                </tr>
+                <!-- Additional rows can be added here -->
+            </tbody>
+        </table>
+
+        <!-- Return Button at Bottom Right -->
+        <button class="btn-return" onclick="returnToMainPage()">Return to Main Page</button>
+    </div>
+
+    <!-- Notification for Successful Payment -->
+    <div id="notification" class="notification">Paid successfully!</div>
+
+    <!-- Footer -->
+    <div class="footer">
+        &copy; 2024 Rai Mukesh. All rights reserved.
+    </div>
+
+    <!-- Modal for Viewing Order Details -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Order Details</h2>
+            <p id="modalContent"></p>
+        </div>
+    </div>
+
+    <!-- JavaScript for Order Actions -->
+    <script>
+        function viewOrder(orderId) {
+            const modal = document.getElementById("orderModal");
+            const content = document.getElementById("modalContent");
+            content.innerHTML = "Details for Order ID: " + orderId + "<br>Date: 2024-10-15<br>Status: Shipped<br>Total: ₹ 2,500.00"; // Populate with actual data
+            modal.style.display = "block"; // Show modal
+        }
+
+        function closeModal() {
+            document.getElementById("orderModal").style.display = "none"; // Hide modal
+        }
+
+        function markAsPaid(orderId) {
+            const confirmation = confirm("Are you sure you want to mark Order ID: " + orderId + " as paid?");
+            if (confirmation) {
+                // Remove the order row from the table
+                const orderRow = document.getElementById("order-" + orderId);
+                if (orderRow) {
+                    orderRow.remove(); // Remove the row from the table
+                }
+                showNotification("Paid successfully!"); // Show notification
+            }
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById("notification");
+            notification.textContent = message; // Set the notification message
+            notification.classList.add('show'); // Add show class to display it
+            setTimeout(() => {
+                notification.classList.remove('show'); // Hide after 3 seconds
+            }, 3000); // Duration of the notification
+        }
+
+        function cancelOrder(orderId) {
+            const confirmation = confirm("Are you sure you want to cancel Order ID: " + orderId + "?");
+            if (confirmation) {
+                // Remove the order row from the table
+                const orderRow = document.getElementById("order-" + orderId);
+                if (orderRow) {
+                    orderRow.remove(); // Remove the row from the table
+                }
+                alert("Order ID: " + orderId + " has been canceled."); // Notify user
+            }
+        }
+
+        function returnToMainPage() {
+            window.location.href = "inventory.html"; // Change 'index.html' to your main page URL
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById("orderModal");
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+
+</body>
+</html>

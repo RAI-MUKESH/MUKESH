@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motorcycle Spare Parts Inventory Management</title>
+    <link rel="stylesheet" href="return.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1 class="logo">Motorcycle Parts Inventory</h1>
+            <nav class="nav">
+                <a href="inventory.html" class="nav-btn">Inventory</a>
+                <a href="cart.html" class="nav-btn">Cart</a>
+                <a href="orders.html" class="nav-btn">Orders</a>
+                <a href="logout.html" class="nav-btn">Logout</a>
+            </nav>
+        </div>
+    </header>
+    <div class="main-container">
+        <aside class="sidebar">
+            <h2>Features</h2>
+            <ul class="sidebar-list">
+                <li><a href="dashboard.html" class="sidebar-link">Dashboard</a></li>
+                <li><a href="add-new-part.html" class="sidebar-link">Add New Part</a></li>
+                <li><a href="manage-categories.html" class="sidebar-link">Manage Categories</a></li>
+                <li><a href="view-orders.html" class="sidebar-link">View Orders</a></li>
+                <li><a href="settings.html" class="sidebar-link">Settings</a></li>
+                <li><a href="support.html" class="sidebar-link">Support</a></li>
+            </ul>
+        </aside>
+        <main class="content">
+            <h2>Inventory Management</h2>
+            <form id="inventory-form">
+                <div class="form-group">
+                    <label for="part-name">Part Name</label>
+                    <input type="text" id="part-name" placeholder="e.g., Brake Pad" required>
+                </div>
+                <div class="form-group">
+                    <label for="part-number">Part Number</label>
+                    <input type="text" id="part-number" placeholder="e.g., BP1234" required>
+                </div>
+                <div class="form-group">
+                    <label for="part-category">Category</label>
+                    <input type="text" id="part-category" placeholder="e.g., Brakes" required>
+                </div>
+                <div class="form-group">
+                    <label for="part-price">Price (INR)</label>
+                    <input type="number" id="part-price" placeholder="e.g., 2500.00" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="part-quantity">Quantity</label>
+                    <input type="number" id="part-quantity" placeholder="e.g., 50" required>
+                </div>
+                <button type="submit" class="btn-primary">Add Part</button>
+            </form>
+            <table id="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Part Name</th>
+                        <th>Part Number</th>
+                        <th>Category</th>
+                        <th>Price (INR)</th>
+                        <th>Quantity</th>
+                        <th>Total Value (INR)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="inventory-list">
+                    <!-- Spare parts will be dynamically added here -->
+                </tbody>
+            </table>
+        </main>
+    </div>
+    <script src="return.js"></script>
+</body>
+</html>

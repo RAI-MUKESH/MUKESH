@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Motorcycle Inventory Management</title>
+    <link rel="stylesheet" href="settings.css">
+    <script src="settings.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <div id="notification" class="notification"></div>
+        <h1>Settings</h1>
+        <form id="settingsForm">
+            <div class="form-group">
+                <label for="companyName">Company Name:</label>
+                <input type="text" id="companyName" placeholder="Enter company name" required>
+            </div>
+            <div class="form-group">
+                <label for="logoUpload">Company Logo:</label>
+                <input type="file" id="logoUpload" accept="image/*" required>
+                <img id="logoPreview" alt="Logo Preview" style="display:none;">
+            </div>
+            <div class="form-group">
+                <label for="currency">Currency Format:</label>
+                <input type="text" id="currency" placeholder="Enter currency format (e.g., ₹)" required>
+            </div>
+            <div class="form-group">
+                <label for="themeColor">Theme Color:</label>
+                <input type="color" id="themeColor" value="#007BFF">
+            </div>
+            <div class="form-group">
+                <label for="language">Language:</label>
+                <select id="language">
+                    <option value="en">English</option>
+                    <option value="fr">French</option>
+                    <option value="es">Spanish</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="notificationsToggle">Enable Notifications:</label>
+                <label class="switch">
+                    <input type="checkbox" id="notificationsToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="form-group">
+                <button type="submit">Save Settings</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
